@@ -2,7 +2,6 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import pandas as pd
 import io
-from utils import get_data_from_api, preprocess_data
 
 # Usamos @st.cache_data para almacenar los datos en caché
 @st.cache_data
@@ -41,14 +40,7 @@ def download_graph(fig):
         mime="image/png"
     )
 
-def app():
-    # Cargar los datos desde la API y preprocesarlos dentro de la función
-    try:
-        df = load_data()  # Usamos la función en caché
-    except Exception as e:
-        st.error(f"Error al cargar los datos: {e}")
-        return
-
+def app(df):  # Aquí agregamos el parámetro df
     st.title("Visualización de Datos")
 
     # Opción para seleccionar el tipo de gráfico
@@ -106,14 +98,3 @@ def app():
         ax.set_title(f"Histograma de {columna_x}")
         ax.set_xlabel(columna_x)
         ax.set_ylabel('Frecuencia')
-
-    elif tipo_grafico == "Pastel":
-        # Gráfico de pastel con pandas (aprovechando value_counts)
-        df_filtrado[columna_x].value_counts().plot.pie(autopct='%1.1f%%', ax=ax, startangle=90)
-        ax.set_title(f"Gráfico de Pastel de {columna_x}")
-
-    # Mostrar el gráfico
-    st.pyplot(fig)
-
-    # Proporcionar la opción para descargar el gráfico en formato PNG
-    download_graph(fig)
