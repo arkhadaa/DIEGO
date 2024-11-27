@@ -6,7 +6,7 @@ import visualizaciones
 
 # Cargar los datos desde la API y preprocesarlos
 try:
-    data = get_data_from_api()
+    data = get_data_from_api()  # Llamamos a la función que ahora tiene el timeout aumentado
     df = preprocess_data(data)
 except Exception as e:
     st.error(f"Error al cargar los datos: {e}")
